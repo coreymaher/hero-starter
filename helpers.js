@@ -160,7 +160,7 @@ helpers.findNearestNonTeamDiamondMine = function(gameData) {
   }, board);
 
   //Return the direction that needs to be taken to achieve the goal
-  return pathInfoObject.direction;
+  return pathInfoObject;
 };
 
 // Returns the nearest unowned diamond mine or false, if there are no diamond mines
@@ -182,7 +182,7 @@ helpers.findNearestUnownedDiamondMine = function(gameData) {
   });
 
   //Return the direction that needs to be taken to achieve the goal
-  return pathInfoObject.direction;
+  return pathInfoObject;
 };
 
 // Returns the nearest health well or false, if there are no health wells
@@ -196,7 +196,7 @@ helpers.findNearestHealthWell = function(gameData) {
   });
 
   //Return the direction that needs to be taken to achieve the goal
-  return pathInfoObject.direction;
+  return pathInfoObject;
 };
 
 // Returns the direction of the nearest enemy with lower health
@@ -213,7 +213,7 @@ helpers.findNearestWeakerEnemy = function(gameData) {
   //Return the direction that needs to be taken to achieve the goal
   //If no weaker enemy exists, will simply return undefined, which will
   //be interpreted as "Stay" by the game object
-  return pathInfoObject.direction;
+  return pathInfoObject;
 };
 
 // Returns the direction of the nearest enemy
@@ -228,7 +228,7 @@ helpers.findNearestEnemy = function(gameData) {
   });
 
   //Return the direction that needs to be taken to achieve the goal
-  return pathInfoObject.direction;
+  return pathInfoObject;
 };
 
 // Returns the direction of the nearest friendly champion
@@ -243,7 +243,7 @@ helpers.findNearestTeamMember = function(gameData) {
   });
 
   //Return the direction that needs to be taken to achieve the goal
-  return pathInfoObject.direction;
+  return pathInfoObject;
 };
 
 module.exports = helpers;

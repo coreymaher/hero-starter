@@ -68,18 +68,67 @@
 //   }
 // };
 
-// // The "Careful Assassin"
-// // This hero will attempt to kill the closest weaker enemy hero.
-// var move = function(gameData, helpers) {
-//   var myHero = gameData.activeHero;
-//   if (myHero.health < 50) {
-//     return helpers.findNearestHealthWell(gameData);
-//   } else {
-//     return helpers.findNearestWeakerEnemy(gameData);
-//   }
-// };
+// // The Hero
+var move = function(gameData, helpers) {
+    var myHero = gameData.activeHero;
+
+    var locations = {
+        enemy       : helpers.findNearestEnemy(gameData),
+        weakerEnemy : helpers.findNearestWeakerEnemy(gameData),
+        healthWell  : helpers.findNearestHealthWell(gameData),
+        nonTeamMine : helpers.findNearestNonTeamDiamondMine(gameData)
+    };
+
+    var priorities = {
+        enemy       : 1,
+        weakerEnemy : 2,
+        healthWell  : 4,
+        nonTeamMine : 3
+    };
+
+    var direction = null;
+    if (myHero.health > 50) {
+        if (myHero.health === 100) {
+            priorities.healthWell = 0;
+        }
+
+        var possibleActions = {
+            weakerEnemy : !!locations.weakerEnemy,
+            nonTeamMine : !!locations.nonTeamMine
+        };
+
+        var selectedAction = null
+        Object.keys(possibleActions).forEach(function(action) {
+            if (!selectedAction || (action && locations[action].distance < locations[selectedAction].distance)) {
+                selectedAction = action;
+            }
+        });
+
+        priorities[selectedAction] = 100;
+    } else {
+        priorities.healthWell  = 10;
+
+        priorities.nonTeamMine = 0;
+        priorities.enemy       = 0;
+        priorities.weakerEnemy = 0;
+    }
+
+    if (myHero.health < 100 && locations.healthWell.distance === 1) {
+        priorities.healthWell = 1000;
+    }
+
+    var action = 'healthWell';
+    Object.keys(priorities).forEach(function(priority) {
+        if (locations[priority] && priorities[priority] > priorities[action]) {
+            action = priority;
+        }
+    });
+
+    return locations[action].direction;
+};
 
 // // The "Safe Diamond Miner"
+/*
 var move = function(gameData, helpers) {
   var myHero = gameData.activeHero;
 
@@ -104,6 +153,7 @@ var move = function(gameData, helpers) {
     return helpers.findNearestNonTeamDiamondMine(gameData);
   }
 };
+*/
 
 // // The "Selfish Diamond Miner"
 // // This hero will attempt to capture diamond mines (even those owned by teammates).
