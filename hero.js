@@ -122,8 +122,9 @@ var move = function(gameData, helpers) {
     // Look at nearby mines
     if (nextOccupied.DiamondMine.length > 0) {
         // Find first one that our team doesn't own
+        // Dead teammember's mines are considered not owned
         nextOccupied.DiamondMine.every(function(mine) {
-            if (!mine.tile.owner || mine.tile.owner.team !== myHero.team) {
+            if (!mine.tile.owner || mine.tile.owner.dead || mine.tile.owner.team !== myHero.team) {
                 direction = mine.direction;
 
                 return false;
